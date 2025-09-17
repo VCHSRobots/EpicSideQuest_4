@@ -22,9 +22,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class Turntable {
-   
-      public static final ServoMotorSubsystemConfig kTurntableConstants =
+  public static class TurntableConstants {}
+
+    public static final ServoMotorSubsystemConfig kTurntableConstants =
         new ServoMotorSubsystemConfig();
 
     static {
@@ -32,5 +32,4 @@ public final class Constants {
 
       kTurntableConstants.talonCANID = new CANDeviceId(0);
     }
-  }
 }
