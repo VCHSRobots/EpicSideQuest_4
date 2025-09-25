@@ -4,22 +4,23 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.ServoMotorSubsystemConfig;
-import frc.lib.TalonFXIO;
 
-public class Turntable extends SubsystemBase {
-  // private TalonFXIO m_turntable;
-  /** Creates a new Turntable. */
-  public Turntable(ServoMotorSubsystemConfig c) {
-    // m_turntable = new TalonFXIO(c);
+public class Feeder extends SubsystemBase {
+  private TalonFX m_beltMotor = new TalonFX(3);
+  SoftwareLimitSwitchConfigs config = new SoftwareLimitSwitchConfigs().withForwardSoftLimitEnable(false);
+  /** Creates a new Feeder. */
+  public Feeder() {
+    m_beltMotor.getConfigurator().apply(config);
   }
-
+  public void set(double value) {
+    m_beltMotor.set(value);
+  }
   @Override
   public void periodic() {
-    // motor.set(1);
     // This method will be called once per scheduler run
   }
 }
