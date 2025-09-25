@@ -1,4 +1,4 @@
-package frc.team4415.lib.util;
+package frc.lib;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;

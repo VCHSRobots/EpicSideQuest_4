@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -16,6 +17,7 @@ import frc.robot.subsystems.Shooter;
  */
 public class Robot extends TimedRobot {
   private Shooter m_shooter = new Shooter();
+  private Feeder m_feeder = new Feeder();
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_shooter.set(1);
+    m_feeder.set(.1);
   }
 
   /** This function is called periodically during operator control. */
