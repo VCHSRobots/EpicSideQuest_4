@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
   
   public void set(double value) {
     shooterTop.setOpenLoopDutyCycle(value);
-    shooterBottom.setOpenLoopDutyCycle(value-.1);
+    shooterBottom.setOpenLoopDutyCycle(value-.2);
   }
   @Override
   public void periodic() {
