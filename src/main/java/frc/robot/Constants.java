@@ -22,7 +22,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class TurntableConstants {}
+  public static class TurntableConstants {
 
     public static final ServoMotorSubsystemConfig kTurntableConstants =
         new ServoMotorSubsystemConfig();
@@ -30,6 +30,8 @@ public final class Constants {
     static {
       kTurntableConstants.name = "Turntable";
 
-      kTurntableConstants.talonCANID = new CANDeviceId(0);
+      kTurntableConstants.talonCANID = new CANDeviceId(3);
+      kTurntableConstants.unitToRotorRatio = (1 / 7.721) * 360;
     }
+  }
 }

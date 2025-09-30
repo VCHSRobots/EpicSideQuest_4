@@ -7,8 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Feeder;
+import frc.lib.TalonFXIO;
+import frc.robot.Constants.TurntableConstants;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turntable;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -17,7 +19,7 @@ import frc.robot.subsystems.Shooter;
  */
 public class Robot extends TimedRobot {
   private Shooter m_shooter = new Shooter();
-  private Feeder m_feeder = new Feeder();
+  private Turntable m_turntable;
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
@@ -30,6 +32,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_turntable = new Turntable(TurntableConstants.kTurntableConstants, new TalonFXIO(TurntableConstants.kTurntableConstants));
+    configureBindings();
+    m_turntable.io.setCurrentPositionAsZero();
+  }
+
+  private void configureBindings() {
+    // m_turntable.motionMagicUntilSetpointCommand(() -> 0);
   }
 
   /**
