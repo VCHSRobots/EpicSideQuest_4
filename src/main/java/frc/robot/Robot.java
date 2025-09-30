@@ -89,7 +89,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_shooter.set(1);
-    m_feeder.set(.1);
   }
 
   /** This function is called periodically during operator control. */
