@@ -27,6 +27,8 @@ public class Shooter extends SubsystemBase {
     m_topConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     m_bottomConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     m_topConfig.fxConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    m_topConfig.unitToRotorRatio = 1;
+    m_bottomConfig.unitToRotorRatio = 1;
     shooterTop = new TalonFXIO(m_topConfig);
     shooterBottom = new TalonFXIO(m_bottomConfig);
   }
@@ -34,7 +36,7 @@ public class Shooter extends SubsystemBase {
   
   public void set(double value) {
     shooterTop.setOpenLoopDutyCycle(value);
-    shooterBottom.setOpenLoopDutyCycle(value-.2);
+    shooterBottom.setOpenLoopDutyCycle(value-.9);
   }
   @Override
   public void periodic() {
