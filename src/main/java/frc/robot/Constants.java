@@ -23,6 +23,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class TurntableConstants {
+    public static final double kPose1 = 10;
 
     public static final ServoMotorSubsystemConfig kTurntableConstants =
         new ServoMotorSubsystemConfig();

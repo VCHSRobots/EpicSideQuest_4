@@ -7,7 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.TalonFXIO;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.TurntableConstants;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turntable;
@@ -21,6 +24,8 @@ public class Robot extends TimedRobot {
   private Shooter m_shooter = new Shooter();
   private Turntable m_turntable;
   private Command m_autonomousCommand;
+ private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   private final RobotContainer m_robotContainer;
 
@@ -38,7 +43,7 @@ public class Robot extends TimedRobot {
   }
 
   private void configureBindings() {
-    // m_turntable.motionMagicUntilSetpointCommand(() -> 0);
+    m_driverController.x().onTrue(Commands.runOnce(() -> m_turntable.motionMagicSetpointCommand(() -> TurntableConstants.kPose1)));
   }
 
   /**
