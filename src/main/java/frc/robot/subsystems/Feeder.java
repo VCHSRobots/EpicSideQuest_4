@@ -9,8 +9,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.CANDeviceId;
+import frc.lib.RobotTime;
 import frc.lib.ServoMotorSubsystemConfig;
 import frc.lib.TalonFXIO;
 
@@ -27,6 +30,14 @@ public class Feeder extends SubsystemBase {
   }
   public void set(double value) {
     m_beltIO.setOpenLoopDutyCycle(value);
+  }
+  public Command clearFeeder() {
+    return runOnce(() -> {
+    double startTime = RobotTime.getTimestampSeconds();
+    while(startTime - RobotTime.getTimestampSeconds() < 1.) {
+      set(-.1);
+    }
+  });
   }
   @Override
   public void periodic() {

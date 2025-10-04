@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.TalonFXIO;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.TurntableConstants;
+import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turntable;
 
@@ -22,6 +24,8 @@ import frc.robot.subsystems.Turntable;
  */
 public class Robot extends TimedRobot {
   private Shooter m_shooter = new Shooter();
+  private Hopper m_hopper = new Hopper();
+  private Feeder m_feeder = new Feeder();
   private Turntable m_turntable;
   private Command m_autonomousCommand;
  private final CommandXboxController m_driverController =
@@ -43,7 +47,10 @@ public class Robot extends TimedRobot {
   }
 
   private void configureBindings() {
-    m_driverController.x().onTrue(Commands.runOnce(() -> m_turntable.motionMagicSetpointCommand(() -> TurntableConstants.kPose1)));
+    m_driverController.x().toggleOnTrue(Commands.runEnd(() -> m_feeder.set(.2), () -> m_feeder.set(.0), m_feeder));
+    m_driverController.a().toggleOnTrue(Commands.runEnd(() -> m_shooter.set(1), () -> m_shooter.set(0), m_shooter));
+    m_driverController.y().toggleOnTrue(Commands.runEnd(() -> m_hopper.set(.3), () -> m_hopper.set(0), m_hopper));
+    m_driverController.b().whileTrue(m_feeder.clearFeeder());
   }
 
   /**
