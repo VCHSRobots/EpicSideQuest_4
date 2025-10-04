@@ -28,6 +28,7 @@ public class TalonFXIO implements MotorIO {
   private final PositionVoltage positionVoltageControl = new PositionVoltage(0.0);
   private final DynamicMotionMagicVoltage motionMagicPositionControl =
       new DynamicMotionMagicVoltage(0, 0, 0, 0);
+  private final MotionMagicDutyCycle motionMagicDutyCycle = new MotionMagicDutyCycle(0);
   private final StatusSignal<Angle> positionSignal;
   private final StatusSignal<AngularVelocity> velocitySignal;
   private final StatusSignal<Voltage> voltageSignal;

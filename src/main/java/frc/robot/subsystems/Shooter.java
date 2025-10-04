@@ -8,6 +8,9 @@ import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
+import dev.doglog.DogLog;
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.CANDeviceId;
 import frc.lib.ServoMotorSubsystemConfig;
@@ -20,8 +23,12 @@ public class Shooter extends SubsystemBase {
 
   ServoMotorSubsystemConfig m_topConfig = new ServoMotorSubsystemConfig();
   ServoMotorSubsystemConfig m_bottomConfig = new ServoMotorSubsystemConfig();
+  private DoubleSubscriber topSub;
+  private DoubleSubscriber botSub;
   /** Creates a new Shooter. */
   public Shooter() {
+    topSub = DogLog.tunable("ShooterTopSub", 0.0);
+    botSub = DogLog.tunable("ShooterBotSub", 0.1);
     m_topConfig.talonCANID = new CANDeviceId(0);
     m_bottomConfig.talonCANID = new CANDeviceId(1);
     m_topConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
@@ -29,14 +36,25 @@ public class Shooter extends SubsystemBase {
     m_topConfig.fxConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     m_topConfig.unitToRotorRatio = 1;
     m_bottomConfig.unitToRotorRatio = 1;
+    
+    m_topConfig.fxConfig.Slot0.kP = 1.;
+    // m_topConfig.fxConfig.Slot0.kV = 4.256;
+    // m_topConfig.fxConfig.Slot0.kS = 411.28;
+    // m_topConfig.fxConfig.Slot0.kA = 47.247;
+
+    m_bottomConfig.fxConfig.Slot0.kP = 1.;
+    // m_bottomConfig.fxConfig.Slot0.kV = 4.256;
+    // m_bottomConfig.fxConfig.Slot0.kS = 411.28;
+    // m_bottomConfig.fxConfig.Slot0.kA = 47.247;
+
     shooterTop = new TalonFXIO(m_topConfig);
     shooterBottom = new TalonFXIO(m_bottomConfig);
   }
 
-  
   public void set(double value) {
-    shooterTop.setOpenLoopDutyCycle(value);
-    shooterBottom.setOpenLoopDutyCycle(value-.9);
+    shooterTop.setVelocitySetpoint(value-topSub.get());
+    shooterBottom.setVelocitySetpoint(value); 
+    // shooterBottom.setOpenLoopDutyCycle(value-botSub.get());
   }
   @Override
   public void periodic() {
