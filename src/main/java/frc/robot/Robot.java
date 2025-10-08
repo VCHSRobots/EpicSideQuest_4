@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
   }
 
   private void configureBindings() {
-    m_driverController.x().onTrue(Commands.runOnce(() -> m_turntable.motionMagicSetpointCommand(() -> TurntableConstants.kPose1)));
+    // m_driverController.x().onTrue(Commands.runOnce(() -> m_turntable.motionMagicSetpointCommand(() -> TurntableConstants.kPose1)));
   }
 
   /**
@@ -93,7 +93,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_shooter.set(1);
   }
 
   /** This function is called periodically during operator control. */

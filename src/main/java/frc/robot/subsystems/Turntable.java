@@ -17,7 +17,7 @@ public class Turntable extends ServoMotorSubsystem<MotorInputs, TalonFXIO> {
     // m_turntable = new TalonFXIO(c);
   public Turntable(ServoMotorSubsystemConfig c, final TalonFXIO io) {
     super(c, new MotorInputs(), io);
-  }
+  } 
 
   @Override
   public void periodic() {
