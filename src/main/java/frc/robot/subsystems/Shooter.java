@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
   private DoubleSubscriber botSub;
   /** Creates a new Shooter. */
   public Shooter() {
-    topSub = DogLog.tunable("ShooterTopSub", 0.0);
+    topSub = DogLog.tunable("ShooterTopSub",10.);
     botSub = DogLog.tunable("ShooterBotSub", 0.1);
     m_topConfig.talonCANID = new CANDeviceId(0);
     m_bottomConfig.talonCANID = new CANDeviceId(1);
