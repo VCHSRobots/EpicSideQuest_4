@@ -5,14 +5,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
+    
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hopper extends SubsystemBase {
   private TalonFX hopperMotor = new TalonFX(2);
   /** Creates a new Hopper. */
   public Hopper() {
-
+    
   }
 
   public void set(double value) {
