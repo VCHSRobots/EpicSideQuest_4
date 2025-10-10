@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_turntable = new Turntable(TurntableConstants.kTurntableConstants, new TalonFXIO(TurntableConstants.kTurntableConstants));
     configureBindings();
-    m_turntable.io.setCurrentPositionAsZero();
+    // m_turntable.io.setCurrentPositionAsZero();
   }
 
   private void configureBindings() {

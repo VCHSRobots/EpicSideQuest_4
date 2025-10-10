@@ -14,7 +14,6 @@ import frc.lib.ServoMotorSubsystemConfig;
 import frc.lib.TalonFXIO;
 
 public class Turntable extends ServoMotorSubsystem<MotorInputs, TalonFXIO> {
-    // m_turntable = new TalonFXIO(c);
   public Turntable(ServoMotorSubsystemConfig c, final TalonFXIO io) {
     super(c, new MotorInputs(), io);
   } 
@@ -23,5 +22,6 @@ public class Turntable extends ServoMotorSubsystem<MotorInputs, TalonFXIO> {
   public void periodic() {
     // This method will be called once per scheduler run
     super.periodic();
+    // SmartDashboard.putNumber("turntable", this.getCurrentPosition());
   }
   }
