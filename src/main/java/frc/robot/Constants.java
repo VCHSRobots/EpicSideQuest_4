@@ -33,7 +33,9 @@ public final class Constants {
       kTurntableConstants.name = "Turntable";
 
       kTurntableConstants.talonCANID = new CANDeviceId(9);
-      kTurntableConstants.unitToRotorRatio = (1 / 7.721) * 360; // (1 / 7.721) * 360;
+      kTurntableConstants.unitToRotorRatio = (8 ); // (1 / 7.721) * 360;
+      kTurntableConstants.fxConfig.Slot0.kP = 1;
+      // kTurntableConstants.fxConfig.MotionMagi
     }
   }
 }
