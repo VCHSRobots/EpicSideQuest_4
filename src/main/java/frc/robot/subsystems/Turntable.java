@@ -22,8 +22,11 @@ public class Turntable extends ServoMotorSubsystem<MotorInputs, TalonFXIO> {
   } 
   double setPoint = 0;
   public Command loadCommand() {
-    // return Commands.run(() -> positionSetpointCommand(() -> getCurrentPosition() + 45.0));
-    return Commands.runOnce(() -> setPoint = getCurrentPosition() + 45.0).andThen(positionSetpointUntilOnTargetCommand(() -> setPoint, () -> 3.0));
+    // return Commands.runOnce(() -> setPoint = getCurrentPosition() + 45.0).andThen(positionSetpointUntilOnTargetCommand(() -> setPoint, () -> 3.0));
+    return Commands.runOnce(() -> setPoint = getCurrentPosition() + 45.0).andThen(motionMagicUntilSetpointCommand(() -> setPoint));
+  }
+  public Command unloadCommand() {
+    return Commands.runOnce(() -> setPoint = getCurrentPosition() - 45.0).andThen(positionSetpointUntilOnTargetCommand(() -> setPoint, () -> 3.0));
   }
   @Override
   public void periodic() {

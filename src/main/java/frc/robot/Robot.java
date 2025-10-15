@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
 
   private void configureBindings() {
     m_driverController.x().toggleOnTrue(m_turntable.loadCommand());
+    m_driverController.b().toggleOnTrue(m_turntable.unloadCommand());
   }
 
   /**

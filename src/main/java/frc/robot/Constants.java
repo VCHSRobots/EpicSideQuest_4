@@ -32,10 +32,14 @@ public final class Constants {
     static {
       kTurntableConstants.name = "Turntable";
 
-      kTurntableConstants.talonCANID = new CANDeviceId(9);
-      kTurntableConstants.unitToRotorRatio = (8 ); // (1 / 7.721) * 360;
-      kTurntableConstants.fxConfig.Slot0.kP = 1;
-      // kTurntableConstants.fxConfig.MotionMagi
+      kTurntableConstants.talonCANID = new CANDeviceId(27);
+      kTurntableConstants.unitToRotorRatio = ((1.0 / 9.4)  * 360.0);
+      kTurntableConstants.fxConfig.Slot0.kP = .5;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicCruiseVelocity = 2;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicAcceleration = 1;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicJerk = 0;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicExpo_kV = .15;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicExpo_kA = 5;
     }
   }
 }
