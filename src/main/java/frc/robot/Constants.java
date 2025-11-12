@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -30,9 +31,12 @@ public final class Constants {
 
     static {
       kTurntableConstants.name = "Turntable";
+      kTurntableConstants.fxConfig.Slot0.kP = 1;
+      // kTurntableConstants.fxConfig.Slot1.kI = 0;
+      // kTurntableConstants.fxConfig.Slot2.kD = 0;
 
-      kTurntableConstants.talonCANID = new CANDeviceId(3);
-      kTurntableConstants.unitToRotorRatio = (1 / 7.721) * 360;
+      kTurntableConstants.talonCANID = new CANDeviceId(27);
+      kTurntableConstants.unitToRotorRatio = 8;//(1 / 7.721) * 360;
     }
   }
 }

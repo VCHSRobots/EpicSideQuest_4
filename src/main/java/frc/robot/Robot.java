@@ -4,7 +4,15 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.hardware.CANcoder;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -12,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.TalonFXIO;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.TurntableConstants;
+import frc.robot.subsystems.Actuator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
@@ -28,8 +37,11 @@ public class Robot extends TimedRobot {
   private Feeder m_feeder = new Feeder();
   private Turntable m_turntable;
   private Command m_autonomousCommand;
+  // private TalonSRX m_actuator = new TalonSRX(22);
  private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  // CANcoder m_Lcoder = new CANcoder(7);
+  private Actuator m_actuator = new Actuator();
 
   private final RobotContainer m_robotContainer;
 
@@ -47,10 +59,18 @@ public class Robot extends TimedRobot {
   }
 
   private void configureBindings() {
-    m_driverController.x().toggleOnTrue(Commands.runEnd(() -> m_feeder.set(.2), () -> m_feeder.set(.0), m_feeder));
+    m_driverController.x().onTrue(Commands.runEnd(() -> m_feeder.set(-.2), () -> m_feeder.set(.0), m_feeder).withTimeout(.3));
     m_driverController.a().toggleOnTrue(Commands.runEnd(() -> m_shooter.set(1), () -> m_shooter.set(0), m_shooter));
     m_driverController.y().toggleOnTrue(Commands.runEnd(() -> m_hopper.set(.3), () -> m_hopper.set(0), m_hopper));
     m_driverController.b().whileTrue(m_feeder.clearFeeder());
+    m_turntable.setDefaultCommand(
+      m_turntable.dutyCycleCommand(() -> MathUtil.applyDeadband(Math.pow(-m_driverController.getRightX(),3), .05) * .05));
+      BooleanSupplier m_Direction = () -> false;
+    m_driverController.pov(0).onTrue(m_actuator.goToSetpointCommand(.0058));
+    m_driverController.pov(90).onTrue(m_actuator.goToSetpointCommand(.02));
+    m_driverController.pov(180).onTrue(m_actuator.goToSetpointCommand(.0385));
+    // m_actuator.setDefaultCommand(Commands.run(() -> m_actuator.set(m_driverController.getRightY()), this));
+    // m_driverController.leftBumper().onTrue(m_turntable.positionSetpointUntilOnTargetCommand(() -> 25, () -> 3));
   }
 
   /**
@@ -62,6 +82,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    // m_actuator.set(m_driverController.getRightY());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -71,7 +93,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -93,6 +116,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -100,8 +125,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_feeder.set(.2);
-
+    
     // m_shooter.set(1);
   }
 
