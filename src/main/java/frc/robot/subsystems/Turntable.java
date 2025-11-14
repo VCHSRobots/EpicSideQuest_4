@@ -18,17 +18,22 @@ import frc.lib.ServoMotorSubsystemConfig;
 import frc.lib.TalonFXIO;
 
 public class Turntable extends ServoMotorSubsystem<MotorInputs, TalonFXIO> {
-    // m_turntable = new TalonFXIO(c);
-    // private TalonFXIO turntableA;
-    // private ServoMotorSubsystemConfig m_configTurn = new ServoMotorSubsystemConfig();
-  
   public Turntable(ServoMotorSubsystemConfig c, final TalonFXIO io) {
     super(c, new MotorInputs(), io);
+    setCurrentPosition(0);
+  } 
+  double setPoint = 0;
+  public Command loadCommand() {
+    // return Commands.runOnce(() -> setPoint = getCurrentPosition() + 45.0).andThen(positionSetpointUntilOnTargetCommand(() -> setPoint, () -> 3.0));
+    return Commands.runOnce(() -> setPoint = getCurrentPosition() + 45.0).andThen(positionSetpointUntilOnTargetCommand(() -> setPoint, () -> 3.0));
   }
-
+  public Command unloadCommand() {
+    return Commands.runOnce(() -> setPoint = getCurrentPosition() - 45.0).andThen(positionSetpointUntilOnTargetCommand(() -> setPoint, () -> 3.0));
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     super.periodic();
+    // SmartDashboard.putNumber("turntable", this.getCurrentPosition());
   }
   }
