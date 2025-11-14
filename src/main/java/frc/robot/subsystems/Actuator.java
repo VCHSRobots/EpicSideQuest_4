@@ -28,9 +28,9 @@ public class Actuator extends SubsystemBase {
   public Command goToSetpointCommand(double setPoint) { 
     this.setPoint = setPoint;
     return Commands.either(
-      Commands.runEnd(() -> this.set(-.7), () -> this.set(0)), //.raceWith(Commands.waitUntil(isCloseToSetpoint(setPoint))),
-      Commands.runEnd(() -> this.set(.7), () -> this.set(0)) //.raceWith(Commands.waitUntil(isCloseToSetpoint(setPoint)))
-      , () -> setPoint - m_encoder.getPosition().getValueAsDouble() > 0 );
+      Commands.runEnd(() -> this.set(-.7), () -> this.set(0), this).raceWith(Commands.waitUntil(isCloseToSetpoint(setPoint))),
+      Commands.runEnd(() -> this.set(.7), () -> this.set(0), this).raceWith(Commands.waitUntil(isCloseToSetpoint(setPoint))),
+      () -> setPoint - m_encoder.getPosition().getValueAsDouble() > 0 );
   }
 
   private BooleanSupplier isCloseToSetpoint(double setPoint) {

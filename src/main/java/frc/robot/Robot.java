@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
     m_driverController.pov(0).onTrue(m_actuator.goToSetpointCommand(.0058));
     m_driverController.pov(90).onTrue(m_actuator.goToSetpointCommand(.02));
     m_driverController.pov(180).onTrue(m_actuator.goToSetpointCommand(.0385));
-    // m_actuator.setDefaultCommand(Commands.run(() -> m_actuator.set(m_driverController.getRightY()), this));
+    m_actuator.setDefaultCommand(Commands.run(() -> m_actuator.set(MathUtil.applyDeadband(m_driverController.getRightY(), .1)), m_actuator));
     // m_driverController.leftBumper().onTrue(m_turntable.positionSetpointUntilOnTargetCommand(() -> 25, () -> 3));
   }
 
