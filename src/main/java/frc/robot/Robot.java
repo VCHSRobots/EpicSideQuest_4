@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_turntable = new Turntable(TurntableConstants.kTurntableConstants, new TalonFXIO(TurntableConstants.kTurntableConstants));
     configureBindings();
-    m_turntable.io.setCurrentPositionAsZero();
   }
 
   private void configureBindings() {
@@ -64,11 +63,10 @@ public class Robot extends TimedRobot {
     m_driverController.y().toggleOnTrue(Commands.runEnd(() -> m_hopper.set(.3), () -> m_hopper.set(0), m_hopper));
     m_driverController.b().whileTrue(m_feeder.clearFeeder());
     m_turntable.setDefaultCommand(
-      m_turntable.dutyCycleCommand(() -> MathUtil.applyDeadband(Math.pow(-m_driverController.getRightX(),3), .05) * .05));
-      BooleanSupplier m_Direction = () -> false;
-    m_driverController.pov(0).onTrue(m_actuator.goToSetpointCommand(.0058));
-    m_driverController.pov(90).onTrue(m_actuator.goToSetpointCommand(.02));
-    m_driverController.pov(180).onTrue(m_actuator.goToSetpointCommand(.0385));
+      m_turntable.dutyCycleCommand(() -> MathUtil.applyDeadband(Math.pow(-m_driverController.getRightX(),3), .05) * .1));
+    m_driverController.pov(0).onTrue(m_actuator.goToSetpointCommand(.0058).alongWith(m_turntable.goToSetpointCommand(10)).withName("AimAtBottomHole"));
+    m_driverController.pov(90).onTrue(m_actuator.goToSetpointCommand(.02).alongWith(m_turntable.goToSetpointCommand(0)).withName("AimAtMiddleHole"));
+    m_driverController.pov(180).onTrue(m_actuator.goToSetpointCommand(.0385).alongWith(m_turntable.goToSetpointCommand(10)).withName("AimAtTopHole"));
 
     m_actuator.setDefaultCommand(Commands.run(() -> m_actuator.set(MathUtil.applyDeadband(m_driverController.getRightY(), .1)), m_actuator));
     
@@ -126,7 +124,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_shooter.set(1);
   }
 
   /** This function is called periodically during operator control. */
