@@ -55,11 +55,23 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_turntable = new Turntable(TurntableConstants.kTurntableConstants, new TalonFXIO(TurntableConstants.kTurntableConstants));
     configureBindings();
-    // m_turntable.io.setCurrentPositionAsZero();
+    m_turntable.io.setCurrentPositionAsZero();
   }
 
   private void configureBindings() {
-    m_driverController.x().onTrue(Commands.runOnce(() -> m_turntable.motionMagicSetpointCommand(() -> TurntableConstants.kPose1)));
+    m_driverController.x().onTrue(Commands.runEnd(() -> m_feeder.set(-.2), () -> m_feeder.set(.0), m_feeder).withTimeout(.3));
+    m_driverController.a().toggleOnTrue(Commands.runEnd(() -> m_shooter.set(1), () -> m_shooter.set(0), m_shooter));
+    m_driverController.y().toggleOnTrue(Commands.runEnd(() -> m_hopper.set(.3), () -> m_hopper.set(0), m_hopper));
+    m_driverController.b().whileTrue(m_feeder.clearFeeder());
+    m_turntable.setDefaultCommand(
+      m_turntable.dutyCycleCommand(() -> MathUtil.applyDeadband(Math.pow(-m_driverController.getRightX(),3), .05) * .05));
+      BooleanSupplier m_Direction = () -> false;
+    m_driverController.pov(0).onTrue(m_actuator.goToSetpointCommand(.0058));
+    m_driverController.pov(90).onTrue(m_actuator.goToSetpointCommand(.02));
+    m_driverController.pov(180).onTrue(m_actuator.goToSetpointCommand(.0385));
+
+    m_actuator.setDefaultCommand(Commands.run(() -> m_actuator.set(MathUtil.applyDeadband(m_driverController.getRightY(), .1)), m_actuator));
+    
   }
 
   /**
