@@ -4,11 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import frc.lib.CANDeviceId;
 import frc.lib.ServoMotorSubsystemConfig;
 
@@ -45,5 +40,11 @@ public final class Constants {
       kTurntableConstants.fxConfig.MotionMagic.MotionMagicExpo_kV = .15;
       kTurntableConstants.fxConfig.MotionMagic.MotionMagicExpo_kA = 5;
     }
+  }
+
+  public static class ActuatorConstants {
+    static double m_bottomHole = .0058;
+    static double m_middleHole = .02;
+    static double m_topHole = .0385;
   }
 }
