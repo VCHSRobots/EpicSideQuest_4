@@ -26,15 +26,14 @@ public class Actuator extends SubsystemBase {
   }
 
   public Command goToSetpointCommand(double setPoint) { 
-    this.setPoint = setPoint;
     return Commands.either(
       Commands.runEnd(() -> this.set(-.7), () -> this.set(0), this).raceWith(Commands.waitUntil(isCloseToSetpoint(setPoint))),
       Commands.runEnd(() -> this.set(.7), () -> this.set(0), this).raceWith(Commands.waitUntil(isCloseToSetpoint(setPoint))),
-      () -> setPoint - m_encoder.getPosition().getValueAsDouble() > 0 );
+      () -> setPoint - m_encoder.getPosition().getValueAsDouble() > 0 ).alongWith(Commands.runOnce(() -> this.setPoint = setPoint));
   }
 
   private BooleanSupplier isCloseToSetpoint(double setPoint) {
-    return () -> Math.abs(setPoint - m_encoder.getPosition().getValueAsDouble()) < .0001; //threshold
+    return () -> Math.abs(setPoint - m_encoder.getPosition().getValueAsDouble()) < .0005; //threshold
   }
 
   public void set(double value) {
