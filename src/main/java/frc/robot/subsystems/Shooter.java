@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.util.concurrent.CancellationException;
+
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
@@ -18,9 +21,8 @@ import frc.lib.ServoMotorSubsystemConfig;
 import frc.lib.TalonFXIO;
 
 public class Shooter extends SubsystemBase {
-  
-  private TalonFXIO shooterTop;
-  private TalonFXIO shooterBottom;
+  private TalonFXIO[] m_topShooters;
+  private TalonFXIO[] m_botShooters;
 
   ServoMotorSubsystemConfig m_topConfig = new ServoMotorSubsystemConfig();
   ServoMotorSubsystemConfig m_bottomConfig = new ServoMotorSubsystemConfig();
@@ -29,7 +31,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {
     topSub = DogLog.tunable("ShooterTopSub",10.);
-    botSub = DogLog.tunable("ShooterBotSub", 0.1);
+    botSub = DogLog.tunable("ShooterBotSub", 0.);
     m_topConfig.talonCANID = new CANDeviceId(0);
     m_bottomConfig.talonCANID = new CANDeviceId(1);
     m_topConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
@@ -48,14 +50,23 @@ public class Shooter extends SubsystemBase {
     // m_bottomConfig.fxConfig.Slot0.kS = 411.28;
     // m_bottomConfig.fxConfig.Slot0.kA = 47.247;
 
-    shooterTop = new TalonFXIO(m_topConfig);
-    shooterBottom = new TalonFXIO(m_bottomConfig);
+    for (int i = 0; i < 3; i++) {
+      m_topShooters[i] = new TalonFXIO(m_topConfig);
+      m_botShooters[i] = new TalonFXIO(m_bottomConfig);
+      m_topConfig.talonCANID = new CANDeviceId(m_topConfig.talonCANID.getDeviceNumber() + 2);
+      m_bottomConfig.talonCANID = new CANDeviceId(m_bottomConfig.talonCANID.getDeviceNumber() + 2);
+    }
   }
 
   public void set(double value) {
-    shooterTop.setVelocitySetpoint(value-topSub.get());
-    shooterBottom.setVelocitySetpoint(value); 
     // shooterBottom.setOpenLoopDutyCycle(value-botSub.get());
+    for (TalonFXIO m_top : m_topShooters) {
+      m_top.setVelocitySetpoint(value-topSub.get());
+    }
+    for (TalonFXIO m_bot : m_botShooters) {
+      m_bot.setVelocitySetpoint(value-botSub.get());
+    }
+  
   }
   @Override
   public void periodic() {

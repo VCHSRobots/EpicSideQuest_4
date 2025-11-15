@@ -15,18 +15,21 @@ import frc.lib.ServoMotorSubsystemConfig;
 import frc.lib.TalonFXIO;
 
 public class Feeder extends SubsystemBase {
-  private TalonFXIO m_beltIO;
+  private TalonFXIO[] m_beltIO;
 
   private ServoMotorSubsystemConfig m_config = new ServoMotorSubsystemConfig();
   /** Creates a new Feeder. */
   public Feeder() {
-    m_config.talonCANID = new CANDeviceId(3);
+    m_config.talonCANID = new CANDeviceId(11);
     m_config.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     m_config.fxConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    m_beltIO = new TalonFXIO(m_config);
+    for (int i = 0; i < 3; i++) {
+      m_beltIO[i] = new TalonFXIO(m_config);
+      m_config.talonCANID = new CANDeviceId(m_config.talonCANID.getDeviceNumber() + 1);
+    }
   }
-  public void set(double value) {
-    m_beltIO.setOpenLoopDutyCycle(value);
+  public void set(double value, int shooterNum) {
+    m_beltIO[shooterNum].setOpenLoopDutyCycle(value);
   }
   @Override
   public void periodic() {

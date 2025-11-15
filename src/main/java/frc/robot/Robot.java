@@ -6,8 +6,11 @@ package frc.robot;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
@@ -20,6 +23,7 @@ public class Robot extends TimedRobot {
   private Shooter m_shooter = new Shooter();
   private Feeder m_feeder = new Feeder();
   private Command m_autonomousCommand;
+  private CommandXboxController m_controller = new CommandXboxController(0);
 
   private final RobotContainer m_robotContainer;
 
@@ -31,6 +35,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    configureBindings();
+  }
+
+  public void configureBindings() {
+    m_controller.pov(0).whileTrue(Commands.run(() -> m_feeder.set(.5, 0)));
+    m_controller.pov(90).whileTrue(Commands.run(() -> m_feeder.set(.5, 1)));
+    m_controller.pov(180).whileTrue(Commands.run(() -> m_feeder.set(.5, 2)));
   }
 
   /**
@@ -81,7 +92,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_shooter.set(100);
-    m_feeder.set(.55);
+    // m_feeder.set(.55);
   }
 
   /** This function is called periodically during operator control. */

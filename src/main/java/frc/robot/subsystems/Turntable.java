@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.MotorInputs;
 import frc.lib.ServoMotorSubsystem;
@@ -23,5 +24,9 @@ public class Turntable extends ServoMotorSubsystem<MotorInputs, TalonFXIO> {
   public void periodic() {
     // This method will be called once per scheduler run
     super.periodic();
+  }
+
+  public Command goToSetPoint(double angle) {
+    return 
   }
   }
