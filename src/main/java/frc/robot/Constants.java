@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import frc.lib.CANDeviceId;
 import frc.lib.ServoMotorSubsystemConfig;
 
@@ -22,14 +19,26 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class TurntableConstants {}
+  public static class TurntableConstants {
+    public static final double kPose1 = 10;
 
     public static final ServoMotorSubsystemConfig kTurntableConstants =
         new ServoMotorSubsystemConfig();
 
     static {
       kTurntableConstants.name = "Turntable";
+      kTurntableConstants.fxConfig.Slot0.kP = 1;
+      // kTurntableConstants.fxConfig.Slot1.kI = 0;
+      // kTurntableConstants.fxConfig.Slot2.kD = 0;
 
       kTurntableConstants.talonCANID = new CANDeviceId(0);
+      kTurntableConstants.unitToRotorRatio = ((1.0 / 9.4)  * 360.0);
+      kTurntableConstants.fxConfig.Slot0.kP = .5;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicCruiseVelocity = 2;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicAcceleration = 1;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicJerk = 0;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicExpo_kV = .15;
+      kTurntableConstants.fxConfig.MotionMagic.MotionMagicExpo_kA = 5;
     }
+  }
 }
